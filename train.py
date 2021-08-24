@@ -206,13 +206,13 @@ def TrackImages():
     msg=EmailMessage()
     msg['Subject']=fnn
     msg['From']='Face Recognition Attendance System'
-    msg['To']='facultycse1@gmail.com'
+    msg['To']='XYZ@gmail.com'
     with open (fileName,"rb")as f:
         file_data=f.read()
         file_name=f.name
         msg.add_attachment(file_data,maintype="application",subtype="csv",filename=fnn)  
     server=smtplib.SMTP_SSL('smtp.gmail.com',465)
-    server.login("sattendance5@gmail.com","Asdf@1234")
+    server.login("abcd@gmail.com","abcd")
     server.send_message(msg)
     server.quit()
     print("Mail sent!!")
