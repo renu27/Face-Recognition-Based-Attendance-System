@@ -72,7 +72,7 @@ def TakeImages():
     Id=(txt.get())
     name=(txt2.get())
     rows=[]
-    with open("C:/Users/T M RENUSHREE/Desktop/Face-Recognition-Based-Attendance-System-master/StudentDetails/StudentDetails.csv") as csvf:
+    with open("StudentDetails/StudentDetails.csv") as csvf:
         re=csv.DictReader(csvf)
         for r in re:
             if Id==r['Id']:
@@ -111,7 +111,7 @@ def TakeImages():
         cv2.destroyAllWindows() 
         res = "Images Saved for ID : " + Id +" Name : "+ name
         row = [Id , name]
-        with open('C:/Users/T M RENUSHREE/Desktop/Face-Recognition-Based-Attendance-System-master/StudentDetails/StudentDetails.csv','a+') as csvFile:
+        with open('StudentDetails/StudentDetails.csv','a+') as csvFile:
             writer = csv.writer(csvFile)
             writer.writerow(row)
         csvFile.close()
@@ -131,11 +131,11 @@ def TakeImages():
     
 def TrainImages():
     recognizer = cv2.face_LBPHFaceRecognizer.create()
-    harcascadePath = "C:/Users/T M RENUSHREE/Desktop/Face-Recognition-Based-Attendance-System-master/haarcascade_frontalface_default.xml"
+    harcascadePath = "haarcascade_frontalface_default.xml"
     detector =cv2.CascadeClassifier(harcascadePath)
     faces,Id = getImagesAndLabels("TrainingImage")
     recognizer.train(faces, np.array(Id))
-    recognizer.save("C:/Users/T M RENUSHREE/Desktop/Face-Recognition-Based-Attendance-System-master/TrainingImageLabel/Trainner.yml")
+    recognizer.save("TrainingImageLabel/Trainner.yml")
     res = "Image Trained"
     message.configure(text= res)
 
@@ -153,10 +153,10 @@ def getImagesAndLabels(path):
 
 def TrackImages():
     recognizer = cv2.face.LBPHFaceRecognizer_create()
-    recognizer.read("C:/Users/T M RENUSHREE/Desktop/Face-Recognition-Based-Attendance-System-master/TrainingImageLabel/Trainner.yml")
-    harcascadePath = "C:/Users/T M RENUSHREE/Desktop/Face-Recognition-Based-Attendance-System-master/haarcascade_frontalface_default.xml"
+    recognizer.read("TrainingImageLabel/Trainner.yml")
+    harcascadePath = "haarcascade_frontalface_default.xml"
     faceCascade = cv2.CascadeClassifier(harcascadePath);    
-    df=pd.read_csv("C:/Users/T M RENUSHREE/Desktop/Face-Recognition-Based-Attendance-System-master/StudentDetails/StudentDetails.csv")
+    df=pd.read_csv("StudentDetails/StudentDetails.csv")
     cam = cv2.VideoCapture(0)
     font = cv2.FONT_HERSHEY_SIMPLEX        
     col_names =  ['Id','Name','Date','Time']
@@ -181,7 +181,7 @@ def TrackImages():
                 tt=str(Id)  
             if(conf > 75):
                 noOfFile=len(os.listdir("ImagesUnknown"))+1
-                cv2.imwrite("C:/Users/T M RENUSHREE/Desktop/Face-Recognition-Based-Attendance-System-master/ImagesUnknown/Image"+str(noOfFile) + ".jpg", im[y:y+h,x:x+w])            
+                cv2.imwrite("ImagesUnknown/Image"+str(noOfFile) + ".jpg", im[y:y+h,x:x+w])            
             cv2.putText(im,str(tt),(x,y+h), font, 1,(255,255,255),2)        
         attendance=attendance.drop_duplicates(subset=['Id'],keep='first')    
         cv2.imshow('im',im) 
@@ -191,7 +191,7 @@ def TrackImages():
     date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
     timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
     Hour,Minute,Second=timeStamp.split(":")
-    fileName="C:/Users/T M RENUSHREE/Desktop/Face-Recognition-Based-Attendance-System-master/Attendance/Attendance_"+date+"_"+Hour+"-"+Minute+"-"+Second+".csv"
+    fileName="Attendance/Attendance_"+date+"_"+Hour+"-"+Minute+"-"+Second+".csv"
     
     fnn="Attendance_"+date+"_"+Hour+":"+Minute+":"+Second
     attendance.to_csv(fileName,index=False)
